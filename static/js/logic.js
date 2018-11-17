@@ -12,11 +12,14 @@ function markerSize(feature) {
   return feature;
 }
 
+//define arrays to hold marker
+var featureMarker =[]
+
 //create marker layer
 var geoJsonMarker = {
   fillOpacity: 0.50,
   fillColor: "yellow",
-  color: "white"
+  color: "white", 
 
 };
 
@@ -26,24 +29,23 @@ function createFeatures(earthquakeData) {
   // Give each feature a popup describing the place and time of the earthquake
   function onEachFeature(feature, layer) {
     layer.bindPopup("<h3>" + feature.properties.place +
-      "</h3><hr><p>" + new Date(feature.properties.time) + 
-      "</h3><hr><p>" + feature.properties.mag + "</p>");
+      "</h3><hr><p>" + new Date(feature.properties.time) +  
+      "</h3><hr><p> Magnitude: " + feature.properties.mag +"</p>");
+    // featureMarker.push(
+    //   L.circleMarker(feature, {
+    //     fillOpacity: 0.5,
+    //     fillColor: "yellow",
+    //     color: "white"
+    //   })
+    // );
   }
 
-  // Create a GeoJSON layer containing the features array on the earthquakeData object
-  // Run the onEachFeature function once for each piece of data in the array
-  // var earthquakes = L.geoJSON(earthquakeData, {
-  //   onEachFeature: function(feature, layer) {
-  //     L.circleMarker({
-  //       fillOpacity: "white",
-  //       fillColor: "yellow"
-  //     })
-  //   }
-  // });
+
   var earthquakes = L.geoJSON(earthquakeData, {
-    pointToLayer: function(feature, latlng) {
-      return L.circleMarker(latlng, geoJsonMarker);
-    }
+        onEachFeature: onEachFeature,
+        pointToLayer: function(feature, latlng) {
+          return L.circleMarker(latlng, geoJsonMarker)
+        },
   });
 
   // Sending our earthquakes layer to the createMap function
@@ -84,24 +86,6 @@ function createMap(earthquakes) {
     zoom: 6,
     layers: [streetmap, earthquakes]
   });
-
-  function markerSize(magnitude) {
-    return magnitude * 5;
-  }
-
-  var magnitudeMarker = [];
-
-  // for (var i = 0; i < features.length; i++) {
-  //   magnitudeMarker.push(
-  //     L.circleMarker(features[i].geometry.coordinates, {
-  //       fillOpacity: 0.65,
-  //       color: "white",
-  //       fillColor: "yellow",
-  //       radius: markerSize(features[i].properties.mag)
-  //   }));
-  // };
-
-  // var mag = L.layerGroup(magnitudeMarker);
 
     // Create overlay object to hold our overlay layer
    // Create overlay object to hold our overlay layer
