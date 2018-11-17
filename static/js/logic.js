@@ -14,9 +14,10 @@ function markerSize(feature) {
 
 //create marker layer
 var geoJsonMarker = {
-  fillOpacity: "white",
+  fillOpacity: 0.50,
   fillColor: "yellow",
-  radius: markerSize(feature)
+  color: "white"
+
 };
 
 function createFeatures(earthquakeData) {
